@@ -39,41 +39,41 @@ if root_dir:
     # Without them the django server won't run.
     package_name = os.path.basename(root_dir)
     hiddenimports += [
-            # TODO Consider including 'mysite.settings.py' in source code as a data files.
-            #      Since users might need to edit this file.
-            package_name + '.settings',
-            package_name + '.urls',
-            package_name + '.wsgi',
+        # TODO Consider including 'mysite.settings.py' in source code as a data files.
+        #      Since users might need to edit this file.
+        package_name + '.settings',
+        package_name + '.urls',
+        package_name + '.wsgi',
     ]
     # Django hiddenimports from the standard Python library.
     if sys.version_info.major == 3:
         # Python 3.x
         hiddenimports += [
-                'http.cookies',
-                'html.parser',
+            'http.cookies',
+            'html.parser',
         ]
     else:
         # Python 2.x
         hiddenimports += [
-                'Cookie',
-                'HTMLParser',
+            'Cookie',
+            'HTMLParser',
         ]
 
     # Bundle django DB schema migration scripts as data files.
     # They are necessary for some commands.
     logger.info('Collecting Django migration scripts.')
     migration_modules = [
-             'django.conf.app_template.migrations',
-             'django.contrib.admin.migrations',
-             'django.contrib.auth.migrations',
-             'django.contrib.contenttypes.migrations',
-             'django.contrib.flatpages.migrations',
-             'django.contrib.redirects.migrations',
-             'django.contrib.sessions.migrations',
-             'django.contrib.sites.migrations',
+        'django.conf.app_template.migrations',
+        'django.contrib.admin.migrations',
+        'django.contrib.auth.migrations',
+        'django.contrib.contenttypes.migrations',
+        'django.contrib.flatpages.migrations',
+        'django.contrib.redirects.migrations',
+        'django.contrib.sessions.migrations',
+        'django.contrib.sites.migrations',
     ]
     # Include migration scripts of Django-based apps too.
-    installed_apps = eval(get_module_attribute(package_name + '.settings', 'INSTALLED_APPS'))
+    installed_apps = eval(get_module_attribute(package_name + '.settings.production', 'INSTALLED_APPS'))
     migration_modules.extend(set(app + '.migrations' for app in installed_apps))
     # Copy migration files.
     for mod in migration_modules:
